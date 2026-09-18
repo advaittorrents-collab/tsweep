@@ -1,0 +1,17 @@
+name: tesla-scout
+on:
+  schedule: [{cron: "0 8 * * *"}]   # 08:00 UTC = 4 AM EDT / 3 AM EST
+  workflow_dispatch:
+permissions: {contents: write}
+jobs:
+  scout:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - run: python3 scout.py
+      - run: |
+          git config user.name scout-bot
+          git config user.email scout-bot@users.noreply.github.com
+          git add state.txt latest.md
+          git commit -m "scout $(date -u +%F)" || true
+          git push
