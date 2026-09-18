@@ -9,9 +9,10 @@ jobs:
     steps:
       - uses: actions/checkout@v4
       - run: python3 scout.py
+      - run: cat latest.md
       - run: |
           git config user.name scout-bot
           git config user.email scout-bot@users.noreply.github.com
-          git add state.txt latest.md
+          git add -A
           git commit -m "scout $(date -u +%F)" || true
           git push
